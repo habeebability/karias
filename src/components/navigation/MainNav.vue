@@ -29,6 +29,12 @@
 </template>
   
 <script>
+// mapStores map all the stores to the component.
+// import { mapStores } from 'pinia';
+
+import { mapActions, mapState } from 'pinia'
+import { useUserStore } from '@/stores/user';
+
 import ActionButton from '@/components/shared/ActionButton.vue';
 import ProfileImage from '@/components/navigation/ProfileImage.vue';
 import SubNav from '@/components/navigation/SubNav.vue';
@@ -65,10 +71,12 @@ export default {
                 },
 
             ],
-            isLoggedIn: false,
         };
     },
     computed: {
+        // ...mapStores(useUserStore),//userStore
+        ...mapState(useUserStore, ['isLoggedIn']),//map only what we need(isLoggedIn) from the store(useUserStore)
+
         headerHeightClass() {
             return {
                 "h-16": !this.isLoggedIn,
@@ -77,9 +85,8 @@ export default {
         },
     },
     methods: {
-        loginUser() {
-            this.isLoggedIn = true;
-        }
+        ...mapActions(useUserStore, ['loginUser']),//map only what we need(loginUser) from the store(useUserStore)
+
     }
 };
 </script>
