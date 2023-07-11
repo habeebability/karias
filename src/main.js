@@ -4,7 +4,7 @@ import { createPinia } from 'pinia'
 // font awesome configuration
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import { library } from '@fortawesome/fontawesome-svg-core'
-import { faSearch } from '@fortawesome/free-solid-svg-icons'
+import { faAngleDown, faAngleUp, faSearch } from '@fortawesome/free-solid-svg-icons'
 
 import '@/index.css'
 import router from './router'
@@ -12,6 +12,8 @@ import router from './router'
 import App from './App.vue'
 
 library.add(faSearch)
+library.add(faAngleDown)
+library.add(faAngleUp)
 
 const pinia = createPinia()
 createApp(App).use(pinia).use(router).component('font-awesome-icon', FontAwesomeIcon).mount('#app')
