@@ -21,7 +21,11 @@
 
 <script>
 import JobListing from '@/components/job-results/JobListing.vue';
-import axios from 'axios';
+// import axios from 'axios';
+import { mapActions, mapState } from 'pinia';
+import { useJobsStore, FETCH_JOBS, FILTERED_JOBS } from '@/stores/jobs';
+
+
 export default {
     name: "JobListings",
     components: {
@@ -30,7 +34,6 @@ export default {
 
     data() {
         return {
-            jobs: [],
         }
     },
     computed: {
@@ -39,26 +42,30 @@ export default {
             const firstPage = 1;
             return previousPage >= firstPage ? previousPage : undefined;
         },
-        nextPage() {
-            const nextPage = this.currentPage + 1;
-            const lastPage = Math.ceil(this.jobs.length / 10);
-            return nextPage <= lastPage ? nextPage : undefined;
-        },
         currentPage() {
             return Number.parseInt(this.$route.query.page || "1");
         },
-        displayedJobs() {
-            console.log(this.$route);
-            const pageNumber = this.currentPage;
-            const firstJobIndex = (pageNumber - 1) * 10;
-            const lastJobIndex = pageNumber * 10;
-            return this.jobs.slice(firstJobIndex, lastJobIndex);
-        }
+        ...mapState(useJobsStore, {
+            FILTERED_JOBS,
+            nextPage() {
+                const nextPage = this.currentPage + 1;
+                const maxPage = Math.ceil(this.FILTERED_JOBS.length / 10);
+                return nextPage <= maxPage ? nextPage : undefined;
+            },
+            displayedJobs() {
+                const pageNumber = this.currentPage;
+                const firstJobIndex = (pageNumber - 1) * 10;
+                const lastJobIndex = pageNumber * 10;
+                return this.FILTERED_JOBS.slice(firstJobIndex, lastJobIndex);
+            },
+        }),
     },
+
     async mounted() {
-        const baseUrl = import.meta.env.VITE_APP_API_URL;
-        const response = await axios.get(`${baseUrl}/jobs`)
-        this.jobs = response.data;
+        this.FETCH_JOBS();
+    },
+    methods: {
+        ...mapActions(useJobsStore, [FETCH_JOBS]),
     },
 }
 </script>

@@ -3,7 +3,7 @@
 
         <section class="  pt-10 pb-20">
             <div class="grid grid-cols-12">
-                import SpotLight from './SpotLight.vue';
+
                 <div class="col-span-1 col-start-1">
 
                 </div>

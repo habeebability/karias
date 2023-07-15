@@ -36,3 +36,34 @@ const goodFoods = {
   [favoriteFood]: true
 }
 console.log(goodFoods)
+
+// Arrays - order
+// Objects - association
+// Sets - uniqueness
+// Maps - key/value pairs
+
+const numberSets = new Set([1, 2, 3, 4, 5, 5, 5, 5, 5])
+console.log(numberSets)
+
+const numbersFilter = [1, 2, 3, 4, 8, 55, 5, 50, 15]
+
+numbersFilter.filter((number) => number > 4)
+
+console.log(numbersFilter)
+
+const jobs = [
+  {
+    title: 'Frontend Developer',
+    organization: 'Apple'
+  },
+  {
+    title: 'Backend Developer',
+    organization: 'Google'
+  },
+  {
+    title: 'Fullstack Developer',
+    organization: 'Apple'
+  }
+]
+
+jobs.filter((job) => job.organization === 'Apple')
