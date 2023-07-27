@@ -10,26 +10,31 @@
     </div>
 </template>
 
-<script>
-import { mapState } from 'pinia'
-import { useJobsStore, FILTERED_JOBS } from '../../stores/jobs'
-export default {
-    name: "SubNav",
-    data() {
-        return {
-        }
-    },
-    computed: {
-        ...mapState(useJobsStore, [FILTERED_JOBS]),
-        onJobResultsPage() {
-            return this.$route.name === 'JobResults'
-        }
+<script setup>
 
-    },
-    methods: {
+// import { mapState } from 'pinia'
+import { useJobsStore } from '../../stores/jobs'
+import { computed } from 'vue';
+import { useRoute } from 'vue-router';
 
-    }
-}
+const route = useRoute();
+
+const jobsStore = useJobsStore();
+
+const FILTERED_JOBS = computed(() => {
+    return jobsStore.FILTERED_JOBS
+})
+
+
+
+const onJobResultsPage = computed(() => {
+    return route.name === 'JobResults'
+    // ...mapState(useJobsStore, [FILTERED_JOBS]),
+
+})
+
+
+
 
 </script>
 

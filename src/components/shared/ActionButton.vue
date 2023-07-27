@@ -2,57 +2,34 @@
     <button :class="buttonClass">{{ text }}</button>
 </template>
 
-<script>
-export default {
-    name: 'ActionButton',
-    props: {
-        text: {
-            type: String,
-            required: true
-        },
-        type: {
-            type: String,
-            required: false,
-            default: 'primary',
-            validator(value) {
-                return ['primary', 'secondary'].includes(value)
-            }
-            // validator: function (value) {
-            //     return ['primary', 'secondary' ].indexOf(value) !== -1
-            // }
-        }
-    },
-    // data() {
-    //     return {
-    //         primary: this.isPrimary
-    //     }
-    // },
-    computed: {
-        // more optimized
-        buttonClass() {
-            return {
-                [this.type]: true,
-            }
-        }
-        // optimized
-        // buttonClass() {
-        //     return {
-        //         primary: this.type === 'primary', secondary: this.type === 'secondary',
-        //         [this.type]: true,
-        //     }
-        // }
+<script setup>
+import { computed, toRefs } from 'vue';
 
-        // code similar to the above code...
-        // buttonClass() {
-        //     return this.isPrimary ? 'primary' : 'secondary'
-        // }
+const props = defineProps({
+    text: {
+        type: String,
+        required: true
     },
-    methods: {
-        handleClick() {
-            alert('You clicked me!');
+    type: {
+        type: String,
+        required: false,
+        default: 'primary',
+        validator(value) {
+            return ['primary', 'secondary'].includes(value)
         }
     }
-}
+})
+
+
+const { type } = toRefs(props)
+
+const buttonClass = computed(() => {
+    return {
+        [type.value]: true
+    }
+})
+
+
 
 </script>
 

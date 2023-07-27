@@ -11,36 +11,41 @@
             <CollapsibleAccordion header="Degree" />
 
 
-            <JobFiltersSidebarOrganizations />
-            <JobFiltersSidebarJobTypes />
+            <!-- <JobFiltersSidebarOrganizations />
+            <JobFiltersSidebarJobTypes /> -->
+
+            <JobFilterSidebarCheckboxGroup header="Job types" :unique-values="UNIQUE_JOB_TYPES"
+                :action="userStore.ADD_SELECTED_JOB_TYPES" />
+            <JobFilterSidebarCheckboxGroup header="Organizations" :unique-values="UNIQUE_ORGANIZATIONS"
+                :action="userStore.ADD_SELECTED_ORGANIZATIONS" />
 
 
         </section>
     </div>
 </template>
 
-<script>
+<script setup>
+
+import { computed } from 'vue';
 import ActionButton from '@/components/shared/ActionButton.vue';
 import CollapsibleAccordion from '../shared/CollapsibleAccordion.vue';
-import JobFiltersSidebarOrganizations from '@/components/job-filter-sidebar/JobFiltersSidebarOrganizations.vue';
-import JobFiltersSidebarJobTypes from './JobFiltersSidebarJobTypes.vue';
-export default {
-    name: "JobFilterSidebar",
-    components: {
-        ActionButton,
-        CollapsibleAccordion,
-        JobFiltersSidebarOrganizations,
-        JobFiltersSidebarJobTypes
-    },
-    data() {
-        return {
-        }
-    },
-    computed: {
-    },
-    methods: {
-    }
-}
+// import JobFiltersSidebarOrganizations from '@/components/job-filter-sidebar/JobFiltersSidebarOrganizations.vue';
+// import JobFiltersSidebarJobTypes from './JobFiltersSidebarJobTypes.vue';
+import JobFilterSidebarCheckboxGroup from '@/components/job-filter-sidebar/JobFilterSidebarCheckboxGroup.vue';
+
+import { useJobsStore } from '@/stores/jobs';
+import { useUserStore } from '@/stores/user';
+
+const jobsStore = useJobsStore();
+const userStore = useUserStore();
+
+const UNIQUE_ORGANIZATIONS = computed(() => {
+    return jobsStore.UNIQUE_ORGANIZATIONS
+})
+const UNIQUE_JOB_TYPES = computed(() => {
+    return jobsStore.UNIQUE_JOB_TYPES
+})
+
 </script>
 
 <style lang="scss" scoped></style>

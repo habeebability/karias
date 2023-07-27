@@ -4,8 +4,8 @@
             <fieldset>
                 <ul class="flex flex-row flex-wrap">
                     <li v-for="organization in UNIQUE_ORGANIZATIONS" :key="organization" class="h-8 w-1/2">
-                        <input @change="selectOrganization" :id="organization" v-model="selectedOrganizations"
-                            :value="organization" type="checkbox" class="mr-3">
+                        <input :id="organization" v-model="selectedOrganizations" :value="organization" type="checkbox"
+                            class="mr-3" @change="selectOrganization">
                         <label :for="organization">{{ organization }}</label>
                     </li>
 
@@ -16,34 +16,55 @@
     </CollapsibleAccordion>
 </template>
 
-<script>
+<script setup>
 import CollapsibleAccordion from '@/components/shared/CollapsibleAccordion.vue';
 import { useJobsStore } from '@/stores/jobs';
-import { useUserStore, ADD_SELECTED_ORGANIZATIONS } from '@/stores/user';
-import { mapState, mapActions } from 'pinia';
+import { useUserStore } from '@/stores/user';
+import { computed, ref } from 'vue';
+import { useRouter } from 'vue-router';
 
-export default {
-    name: "JobFiltersSidebarOrganizations",
-    components: {
-        CollapsibleAccordion
-    },
-    data() {
-        return {
-            selectedOrganizations: [],
-        }
-    },
-    computed: {
-        ...mapState(useJobsStore, ['UNIQUE_ORGANIZATIONS',]),
-    },
-    methods: {
-        ...mapActions(useUserStore, [ADD_SELECTED_ORGANIZATIONS]),
-        selectOrganization() {
-            this.ADD_SELECTED_ORGANIZATIONS(this.selectedOrganizations);
 
-        }
-    }
+const router = useRouter();
+const jobStore = useJobsStore();
+const userStore = useUserStore();
+const selectedOrganizations = ref([]);
 
+const UNIQUE_ORGANIZATIONS = computed(() => {
+    return jobStore.UNIQUE_ORGANIZATIONS
+})
+
+const selectOrganization = () => {
+    userStore.ADD_SELECTED_ORGANIZATIONS(selectedOrganizations.value)
+    router.push({
+        name: 'JobResults'
+    })
 }
+
+// export default {
+//     name: "JobFiltersSidebarOrganizations",
+//     components: {
+//         CollapsibleAccordion
+//     },
+//     data() {
+//         return {
+//             selectedOrganizations: [],
+//         }
+//     },
+//     computed: {
+//         ...mapState(useJobsStore, ['UNIQUE_ORGANIZATIONS',]),
+//     },
+//     methods: {
+//         ...mapActions(useUserStore, [ADD_SELECTED_ORGANIZATIONS]),
+//         selectOrganization() {
+//             this.ADD_SELECTED_ORGANIZATIONS(this.selectedOrganizations);
+//             this.$router.push({
+//                 name: 'JobResults'
+//             })
+
+//         }
+//     }
+
+// }
 </script>
 
 <style lang="scss" scoped></style>
